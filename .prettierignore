@@ -1,0 +1,8 @@
+android
+ios
+vendor
+.bundle
+.yarn
+.yarn.rc
+.yarn.yml
+yarn.lock
