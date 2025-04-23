@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import {fireEvent, render, screen, within} from '@testing-library/react-native';
+import {fireEvent, render, screen, waitFor, within} from '@testing-library/react-native';
 import App from "./App";
 import navigationRef from '@br/weather/core/services/NavigationService.ts';
 
@@ -14,10 +14,10 @@ test('Weather Forecast page is the first page visible', async () => {
     render(<App />);
 
     // aspetta che la navigazione sia pronta
-    await screen.findAllByText('Weather'); // assicura che sia montato
+    await waitFor(() => expect(navigationRef.isReady()).toBe(true));
 
     const route = navigationRef.getCurrentRoute();
-    expect(route?.name).toBe('Weather');
+    expect(route?.name).toBe('weather');
 
     const weatherHead = await screen.findByRole('header', { name:'Weather' });
     expect(weatherHead).toBeVisible();
@@ -27,7 +27,7 @@ test('Weather Forecast page is the first page visible', async () => {
     expect(weatherSummary).toHaveTextContent('Weather Forecast!');
 });
 
-xtest( 'Open Setting screen selecting Settings tab', async () => {
+test( 'Open Setting screen selecting Settings tab', async () => {
 
     render(<App />);
 
@@ -43,7 +43,7 @@ xtest( 'Open Setting screen selecting Settings tab', async () => {
     fireEvent.press(settingsTab!);
 
     const route = navigationRef.getCurrentRoute();
-    expect(route?.name).toBe('Settings');
+    expect(route?.name).toBe('settings');
 
     const weatherHead = await screen.findByRole('header', { name:'Settings' });
     expect(weatherHead).toBeVisible();

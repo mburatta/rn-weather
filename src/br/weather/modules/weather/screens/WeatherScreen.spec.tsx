@@ -4,7 +4,7 @@ import WeatherScreen from "./WeatherScreen";
 
 test('Weather Forecast! text is visible', () => {
     const expected = 'Weather Forecast!';
-    render(<WeatherScreen />);
+    renderWithKitten(<WeatherScreen />);
 
     const heading = screen.getByRole('summary');
     expect(heading).toBeVisible();
