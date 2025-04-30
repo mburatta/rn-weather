@@ -1,22 +1,21 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, {Fragment, JSX} from 'react';
+import React, { JSX} from 'react';
 import {SafeAreaView} from 'react-native';
 import {Layout, LayoutProps} from '@ui-kitten/components';
 import {styles} from './AppLayout.styles';
 
 type Props = LayoutProps & {
     children?: React.ReactNode;
-    safeArea?: boolean;
 };
 
 export const AppLayout = (props: Props): JSX.Element => {
-    const {children, safeArea = true, style, ...other} = props;
-    const Container = safeArea ? SafeAreaView : Fragment;
+    const {children, style, ...other} = props;
+
     return (
-        <Container style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Layout style={[styles.layout, style]} {...other}>
                 {children}
             </Layout>
-        </Container>
+        </SafeAreaView>
     );
 };
