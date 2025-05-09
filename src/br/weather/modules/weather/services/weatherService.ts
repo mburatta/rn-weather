@@ -7,7 +7,7 @@ import {
 } from '@br/weather/weather/interfaces';
 
 const http = axios.create({
-    baseURL: 'https://api.openweathermap.org/data/2.5',
+    baseURL: 'https://api.openweathermap.org/data/3.0',
     timeout: 10_000,          // 10 s di timeout (opzionale)
 });
 

@@ -11,7 +11,8 @@ module.exports = {
                     '@br/weather/weather': './src/br/weather/modules/weather',
                     '@br/weather/settings': './src/br/weather/modules/settings'
                 },
-            },
+            }
         ],
+        'react-native-reanimated/plugin'
     ],
 };
