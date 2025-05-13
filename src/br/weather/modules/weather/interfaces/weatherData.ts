@@ -1,3 +1,5 @@
+import {UnitType} from '@br/weather/core/config';
+
 export interface WeatherData {
     date: number;
     humidity: number;
@@ -5,6 +7,7 @@ export interface WeatherData {
         current: number;
         min: number;
         max: number;
+        unit: UnitType;
     };
     status: string;
     description: string;

@@ -1,5 +1,5 @@
 import { axios, AxiosError } from '@br/weather/core/services';
-import { config } from '@br/weather/core/config';
+import {config, UnitType} from '@br/weather/core/config';
 import {
     GetDailyWeatherForecastJsonResult,
     GetDailyWeatherForecastParams,
@@ -40,6 +40,7 @@ export const getDailyWeatherForecast = async (
                 min: Math.floor(w.temp.min),
                 max: Math.floor(w.temp.max),
                 current: 0,
+                unit: unit as UnitType,
             },
             icon: w.weather[0].icon,
         }));

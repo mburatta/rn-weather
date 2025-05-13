@@ -1,4 +1,4 @@
-import {config} from '@br/weather/core/config';
+import {config, UnitType} from '@br/weather/core/config';
 import {formatDate} from "@br/weather/core/helpers";
 import {Text, View} from '@br/weather/core/components';
 import {JSX} from "react";
@@ -7,7 +7,7 @@ import {WeatherData} from '@br/weather/weather/interfaces';
 export interface WeatherItemProps {
     data: WeatherData;
     isToday?: boolean;
-    unit: 'metric' | 'imperial';
+    unit: UnitType;
 }
 
 const WeatherItem = (props: WeatherItemProps): JSX.Element => {
