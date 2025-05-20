@@ -5,7 +5,15 @@
 import React from 'react';
 import {fireEvent, render, screen, waitFor, within} from '@testing-library/react-native';
 import App from "./App";
-import navigationRef from '@br/weather/core/services/NavigationService.ts';
+import navigationRef from '@br/weather/core/services/NavigationService';
+
+
+jest.mock('react-native-config', () => ({
+    Config: { STORYBOOK_ENABLED: 'false' }
+}));
+
+jest.mock('../../../.storybook', () => ({
+}));
 
 // jest.useFakeTimers();
 

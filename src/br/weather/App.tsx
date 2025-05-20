@@ -6,6 +6,9 @@ import {SettingsScreen} from "@br/weather/settings/screens";
 import {Navigation, ApplicationProvider, dark, light, mapping} from '@br/weather/core/components';
 import * as brWeatherTheme from '@br/weather/assets/jsons/br-weather-theme.json';
 
+import {default as StorybookDefault} from '../../../.storybook';
+import Config from 'react-native-config';
+
 const navItems: NavItem[] = [
     {
         name: 'weather',
@@ -31,4 +34,11 @@ const App = (): JSX.Element => {
     );
 };
 
-export default App;
+const getAppEntryPoint = () => {
+    if (Config.STORYBOOK_ENABLED === 'true') {
+        return StorybookDefault;
+    }
+    return App;
+};
+
+export default getAppEntryPoint();
