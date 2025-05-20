@@ -8,7 +8,7 @@ module.exports = {
         'node_modules/(?!(react-native|@react-native|' +
         '@react-navigation|react-native-reanimated|' +
         'react-native-gesture-handler|react-native-safe-area-context|' +
-        'react-native-vector-icons)/)'
+        'react-native-vector-icons||@ui-kitten)/)'
     ],
     "collectCoverage": true,
     "coverageReporters": ["json", "html"],

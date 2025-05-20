@@ -3,7 +3,7 @@
  */
 
 import {AppRegistry} from 'react-native';
-import App from '@br/weather/App';
+import App from './src/br/weather/App';
 import {name as appName} from './app.json';
 import 'react-native-gesture-handler';
 

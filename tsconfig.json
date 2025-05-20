@@ -1,10 +1,13 @@
 {
     "extends": "@react-native/typescript-config/tsconfig.json",
     "compilerOptions": {
+        "resolveJsonModule": true,
         "paths": {
             "@br/weather/core/*": ["src/br/weather/core/*"],
+            "@br/weather/assets/*": ["src/br/weather/assets/*"],
             "@br/weather/weather/*": ["src/br/weather/modules/weather/*"],
             "@br/weather/settings/*": ["src/br/weather/modules/settings/*"]
-        }
+        },
+        "types": ["react-native", "jest", "./jest"]
     }
 }

@@ -4,7 +4,7 @@ import SettingsScreen from './SettingsScreen.tsx';
 
 test('Settings! text is visible', () => {
     const expected = 'Settings!';
-    render(<SettingsScreen />);
+    renderWithKitten(<SettingsScreen />);
 
     const heading = screen.getByRole('summary');
     expect(heading).toBeVisible();
