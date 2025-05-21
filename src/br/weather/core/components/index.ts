@@ -1,9 +1,25 @@
-import {SafeAreaView} from 'react-native';
-import {View, Alert, ActivityIndicator} from 'react-native';
-import {ApplicationProvider, Text, useTheme} from '@ui-kitten/components';
-import {light, dark, mapping} from '@eva-design/material';
+import {ActivityIndicator, Alert, SafeAreaView, TouchableOpacity, View, ScrollView} from 'react-native';
+import {ApplicationProvider, Button, Card, Text, useTheme} from '@ui-kitten/components';
+import FastImage from '@d11/react-native-fast-image';
+import {dark, light, mapping} from '@eva-design/material';
 
-export {Alert, Text, SafeAreaView, View, ApplicationProvider, ActivityIndicator, useTheme, light, dark, mapping};
+export {
+    ActivityIndicator,
+    Alert,
+    ApplicationProvider,
+    Button,
+    Card,
+    FastImage,
+    TouchableOpacity,
+    Text,
+    SafeAreaView,
+    ScrollView,
+    View,
+    useTheme,
+    light,
+    dark,
+    mapping,
+};
 export * from './icon/Icon';
 export * from './navigation/Navigation';
-export * from './layout/AppLayout'
+export * from './layout/AppLayout';

@@ -8,7 +8,8 @@ module.exports = {
         'node_modules/(?!(react-native|@react-native|' +
         '@react-navigation|react-native-reanimated|' +
         'react-native-gesture-handler|react-native-safe-area-context|' +
-        'react-native-vector-icons||@ui-kitten)/)'
+        'react-native-vector-icons||@ui-kitten)|' +
+        '@d11/react-native-fast-image/)'
     ],
     "collectCoverage": true,
     "coverageReporters": ["json", "html"],

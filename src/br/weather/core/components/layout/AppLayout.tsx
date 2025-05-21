@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { JSX} from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {Layout, LayoutProps} from '@ui-kitten/components';
 import {styles} from './AppLayout.styles';
 

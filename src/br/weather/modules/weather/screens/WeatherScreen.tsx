@@ -1,12 +1,17 @@
-import React, {JSX, useEffect, useState} from 'react';
+import React, {JSX, useEffect, useRef, useState} from 'react';
 
 import {config, UnitType} from '@br/weather/core/config';
 import {WeatherData} from '@br/weather/weather/interfaces';
 import {weatherService} from '@br/weather/weather/services';
-import {Alert, AppLayout, ActivityIndicator} from '@br/weather/core/components';
-import {Button} from 'react-native';
+import {ActivityIndicator, Alert, AppLayout, Button, ScrollView} from '@br/weather/core/components';
 import WeatherItem from '@br/weather/weather/components/WeatherItem/WeatherItem';
-import styles from './WeatherScreen.styles.ts';
+import themedStyles, {ThemedStyles} from './WeatherScreen.styles.ts';
+import {useImmer} from 'use-immer';
+import {formatDate} from '@br/weather/core/helpers';
+import {Dimensions, Text} from 'react-native';
+import Carousel, {ICarouselInstance, Pagination} from 'react-native-reanimated-carousel';
+import {useSharedValue} from "react-native-reanimated";
+import {useStyleSheet} from "@ui-kitten/components";
 
 interface Conditions {
     lat: number;
@@ -16,7 +21,10 @@ interface Conditions {
     lang: string;
 }
 const WeatherScreen = (): JSX.Element => {
-    const [conditions, setConditions] = useState<Conditions>({
+
+    const styles = useStyleSheet<ThemedStyles>(themedStyles)
+
+    const [conditions, setConditions] = useImmer<Conditions>({
         long: 45.4642,
         lat: 9.1896,
         city: 'Milan',
@@ -24,6 +32,11 @@ const WeatherScreen = (): JSX.Element => {
         lang: 'en',
     });
     const [weatherForecasts, setWeatherForecasts] = useState<WeatherData[]>([]);
+    const [activeSlide, setActiveSlide] = useState(0);
+    const {width: screenWidth} = Dimensions.get('window');
+
+    const ref = useRef<ICarouselInstance>(null);
+    const progress = useSharedValue<number>(0);
 
     const refresh = async (): Promise<void> => {
         try {
@@ -38,39 +51,89 @@ const WeatherScreen = (): JSX.Element => {
         }
     };
 
+    const onPressPagination = (index: number) => {
+
+        setActiveSlide(index);
+        ref.current?.scrollTo({
+            count: index - progress.value,
+            animated: true,
+        });
+    };
+
     useEffect(() => {
         refresh();
     }, [conditions]);
 
     const toggleUnit = (): void => {
-        setConditions({
-            ...conditions,
-            unit:
+        setConditions((draft) => {
+            draft.unit =
                 conditions.unit === config.weather.unitCodes.celsius
                     ? config.weather.unitCodes.fahrenheit
-                    : config.weather.unitCodes.celsius,
+                    : config.weather.unitCodes.celsius;
         });
+    };
+
+    const renderWeatherItem = ({item: weatherForecast, index}: {item: WeatherData; index: number}): JSX.Element => {
+        return (
+            <WeatherItem
+                key={weatherForecast.date}
+                data={weatherForecast}
+                isToday={index === 0}
+                unit={weatherForecast.temperature.unit}
+                toggleUnit={toggleUnit}
+                accessibilityLabel={`Weather forecast for ${formatDate(weatherForecast.date)}`}
+            />
+        );
     };
 
     if (weatherForecasts.length === 0) {
         return (
             <AppLayout style={styles.noDataLayout}>
-                <ActivityIndicator size="large" />
+                <ActivityIndicator size='large' />
             </AppLayout>
         );
     }
 
     return (
         <AppLayout>
-            <Button onPress={toggleUnit} title='Toggle unit'></Button>
-            {weatherForecasts.map((weatherForecast, index) => (
-                <WeatherItem
-                    key={weatherForecast.date}
-                    data={weatherForecast}
-                    isToday={index === 0}
-                    unit={weatherForecast.temperature.unit}
-                />
-            ))}
+            <Carousel
+                ref={ref}
+                autoPlayInterval={2000}
+                data={weatherForecasts}
+                height={258}
+                loop={true}
+                pagingEnabled={true}
+                snapEnabled={true}
+                width={screenWidth}
+                style={{
+                    width: screenWidth,
+                }}
+                mode="parallax"
+                modeConfig={{
+                    parallaxScrollingScale: 0.9,
+                    parallaxScrollingOffset: 50,
+                }}
+                onProgressChange={progress}
+                renderItem={renderWeatherItem}
+            />
+
+            <Pagination.Basic<WeatherData>
+                progress={progress}
+                data={weatherForecasts}
+                size={20}
+                dotStyle={
+                    styles.dot
+                }
+                activeDotStyle={
+                    styles.activeDot
+                }
+                containerStyle={[
+                    styles.paginationContainer
+                ]}
+                horizontal
+                onPress={onPressPagination}
+            />
+
         </AppLayout>
     );
 };
