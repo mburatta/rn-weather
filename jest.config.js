@@ -13,4 +13,23 @@ module.exports = {
     ],
     "collectCoverage": true,
     "coverageReporters": ["json", "html"],
+    collectCoverageFrom: [
+        'src/**/*.ts',
+        'src/**/*.tsx',
+        '!src/**/*.d.ts',
+        '!src/**/index.ts',
+        '!src/**/index.tsx',
+        '!src/**/*.styles.ts',
+        '!src/**/*.stories.tsx',
+        '!src/**/*.spec.ts',
+        '!src/**/*.spec.tsx',
+    ],
+    coveragePathIgnorePatterns: [
+        '/node_modules/',
+        '/android/',
+        '/ios/',
+        '/jest/',
+        '/.storybook/',
+    ],
+
 };

@@ -6,7 +6,7 @@ export const styles =   StyleSheet.create({
     },
     card: {
         borderRadius: 20,
-        justifyContent: 'flex-start',
+        justifyContent: 'flex-start'
     },
     row: {
         flexDirection: 'row',

@@ -3,15 +3,15 @@ import React, {JSX, useEffect, useRef, useState} from 'react';
 import {config, UnitType} from '@br/weather/core/config';
 import {WeatherData} from '@br/weather/weather/interfaces';
 import {weatherService} from '@br/weather/weather/services';
-import {ActivityIndicator, Alert, AppLayout, Button, ScrollView} from '@br/weather/core/components';
+import {ActivityIndicator, Alert, AppLayout, ICarouselInstance, useStyleSheet} from '@br/weather/core/components';
 import WeatherItem from '@br/weather/weather/components/WeatherItem/WeatherItem';
 import themedStyles, {ThemedStyles} from './WeatherScreen.styles.ts';
 import {useImmer} from 'use-immer';
 import {formatDate} from '@br/weather/core/helpers';
-import {Dimensions, Text} from 'react-native';
-import Carousel, {ICarouselInstance, Pagination} from 'react-native-reanimated-carousel';
+import {Dimensions, Text, View} from 'react-native';
+import {Carousel, Pagination } from '@br/weather/core/components';
 import {useSharedValue} from "react-native-reanimated";
-import {useStyleSheet} from "@ui-kitten/components";
+
 
 interface Conditions {
     lat: number;
@@ -96,44 +96,47 @@ const WeatherScreen = (): JSX.Element => {
 
     return (
         <AppLayout>
-            <Carousel
-                ref={ref}
-                autoPlayInterval={2000}
-                data={weatherForecasts}
-                height={258}
-                loop={true}
-                pagingEnabled={true}
-                snapEnabled={true}
-                width={screenWidth}
-                style={{
-                    width: screenWidth,
-                }}
-                mode="parallax"
-                modeConfig={{
-                    parallaxScrollingScale: 0.9,
-                    parallaxScrollingOffset: 50,
-                }}
-                onProgressChange={progress}
-                renderItem={renderWeatherItem}
-            />
+            <View
+                accessible={true}
+                accessibilityRole="adjustable"
+                accessibilityLabel="Weather for the next few days"
+            >
+                <Carousel
+                    ref={ref}
+                    data={weatherForecasts}
+                    loop={weatherForecasts.length > 1}
+                    pagingEnabled={true}
+                    snapEnabled={true}
+                    width={screenWidth}
+                    style={{
+                        width: screenWidth,
+                    }}
+                    mode="parallax"
+                    modeConfig={{
+                        parallaxScrollingScale: 0.9,
+                        parallaxScrollingOffset: 50,
+                    }}
+                    onProgressChange={progress}
+                    renderItem={renderWeatherItem}
+                />
 
-            <Pagination.Basic<WeatherData>
-                progress={progress}
-                data={weatherForecasts}
-                size={20}
-                dotStyle={
-                    styles.dot
-                }
-                activeDotStyle={
-                    styles.activeDot
-                }
-                containerStyle={[
-                    styles.paginationContainer
-                ]}
-                horizontal
-                onPress={onPressPagination}
-            />
-
+                <Pagination.Basic<WeatherData>
+                    progress={progress}
+                    data={weatherForecasts}
+                    size={20}
+                    dotStyle={
+                        styles.dot
+                    }
+                    activeDotStyle={
+                        styles.activeDot
+                    }
+                    containerStyle={[
+                        styles.paginationContainer
+                    ]}
+                    horizontal
+                    onPress={onPressPagination}
+                />
+            </View>
         </AppLayout>
     );
 };
