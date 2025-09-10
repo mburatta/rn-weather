@@ -49,7 +49,7 @@ describe('weatherService.getDailyWeatherForecast (axios‑mock‑adapter)', () =
         // Intercetta qualsiasi GET che contenga "/onecall" nel path (query inclusa)
         mock.onGet(/onecall/).reply(200, mockSuccessResponse);
 
-        const params: GetDailyWeatherForecastParams = {lat: 10, long: 106} as const;
+        const params: GetDailyWeatherForecastParams = {lat: 10, long: 106, unit: 'metric'} as const;
 
         const result = await weatherService.getDailyWeatherForecast(params);
 
@@ -70,6 +70,8 @@ describe('weatherService.getDailyWeatherForecast (axios‑mock‑adapter)', () =
                 min: Math.floor(mockSuccessResponse.daily[0].temp.min),
                 max: Math.floor(mockSuccessResponse.daily[0].temp.max),
                 current: Math.floor(mockSuccessResponse.current.temp),
+                unit: 'metric',
+
             },
             icon: mockSuccessResponse.current.weather[0].icon,
         });

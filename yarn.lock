@@ -1454,6 +1454,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@d11/react-native-fast-image@npm:^8.6.3":
+  version: 8.9.2
+  resolution: "@d11/react-native-fast-image@npm:8.9.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10/6329661ba7ec8a6cfbbdda6bf89ae081c5859b75989443a4adb304d517d40537b8eaff81becfe662de10718fa2e93e82d718d384d10ed7d708e1e8605fa3f342
+  languageName: node
+  linkType: hard
+
 "@egjs/hammerjs@npm:^2.0.17":
   version: 2.0.17
   resolution: "@egjs/hammerjs@npm:2.0.17"
@@ -3222,6 +3232,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-native-snap-carousel@npm:^3.8.12":
+  version: 3.8.12
+  resolution: "@types/react-native-snap-carousel@npm:3.8.12"
+  dependencies:
+    "@types/react": "npm:*"
+  peerDependencies:
+    react-native: "*"
+  checksum: 10/5182bb3190203fc4918e91e6e5d1088862f43a4cc38f2f3ae5d9b60b6ef7cd30475dd521da0c8a009308fa09bcff06519adc5cd87a2bb90fbe6fe690db63ffc2
+  languageName: node
+  linkType: hard
+
 "@types/react-native-vector-icons@npm:^6.4.18":
   version: 6.4.18
   resolution: "@types/react-native-vector-icons@npm:6.4.18"
@@ -3696,6 +3717,7 @@ __metadata:
     "@babel/core": "npm:^7.25.2"
     "@babel/preset-env": "npm:^7.25.3"
     "@babel/runtime": "npm:^7.25.0"
+    "@d11/react-native-fast-image": "npm:^8.6.3"
     "@eva-design/eva": "npm:^2.2.0"
     "@eva-design/material": "npm:^2.2.0"
     "@gorhom/bottom-sheet": "npm:^5.1.4"
@@ -3719,6 +3741,7 @@ __metadata:
     "@types/jest": "npm:^29.5.13"
     "@types/react": "npm:^19.0.0"
     "@types/react-dom": "npm:^19"
+    "@types/react-native-snap-carousel": "npm:^3.8.12"
     "@types/react-native-vector-icons": "npm:^6.4.18"
     "@types/react-test-renderer": "npm:^19.0.0"
     "@ui-kitten/components": "npm:^5.3.1"
@@ -3738,6 +3761,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^4.3.0"
     eslint-plugin-testing-library: "npm:^7.1.1"
     husky: "npm:^9.1.7"
+    immer: "npm:^10.1.1"
     jest: "npm:^29.6.3"
     lint-staged: "npm:^15.5.1"
     prettier: "npm:3.5.3"
@@ -3747,12 +3771,14 @@ __metadata:
     react-native-config: "npm:^1.5.5"
     react-native-gesture-handler: "npm:^2.25.0"
     react-native-reanimated: "npm:^3.17.4"
+    react-native-reanimated-carousel: "npm:^4.0.3"
     react-native-safe-area-context: "npm:^5.4.0"
     react-native-screens: "npm:^4.10.0"
     react-native-svg: "npm:^15.11.2"
     react-native-vector-icons: "npm:^10.2.0"
     react-test-renderer: "npm:19.0.0"
     typescript: "npm:5.0.4"
+    use-immer: "npm:^0.11.0"
   languageName: unknown
   linkType: soft
 
@@ -6948,6 +6974,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"immer@npm:^10.1.1":
+  version: 10.1.1
+  resolution: "immer@npm:10.1.1"
+  checksum: 10/9dacf1e8c201d69191ccd88dc5d733bafe166cd45a5a360c5d7c88f1de0dff974a94114d72b35f3106adfe587fcfb131c545856184a2247d89d735ad25589863
+  languageName: node
+  linkType: hard
+
 "import-fresh@npm:^2.0.0":
   version: 2.0.0
   resolution: "import-fresh@npm:2.0.0"
@@ -9828,6 +9861,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-reanimated-carousel@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "react-native-reanimated-carousel@npm:4.0.3"
+  peerDependencies:
+    react: ">=18.0.0"
+    react-native: ">=0.70.3"
+    react-native-gesture-handler: ">=2.9.0"
+    react-native-reanimated: ">=3.0.0"
+  checksum: 10/b9febfc8beffb63079f65a76aa644c8a260d613760e4edb0107008e70fff2af720588ffe3761316321f1f473615f589240ddbde129d7d2e77d02cb1a4bf896ca
+  languageName: node
+  linkType: hard
+
 "react-native-reanimated@npm:^3.17.4":
   version: 3.17.4
   resolution: "react-native-reanimated@npm:3.17.4"
@@ -11485,6 +11530,16 @@ __metadata:
   dependencies:
     punycode: "npm:^2.1.0"
   checksum: 10/b271ca7e3d46b7160222e3afa3e531505161c9a4e097febae9664e4b59912f4cbe94861361a4175edac3a03fee99d91e44b6a58c17a634bc5a664b19fc76fbcb
+  languageName: node
+  linkType: hard
+
+"use-immer@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "use-immer@npm:0.11.0"
+  peerDependencies:
+    immer: ">=8.0.0"
+    react: ^16.8.0 || ^17.0.1 || ^18.0.0 || ^19.0.0
+  checksum: 10/09ddbddec5bd5a939dc462de4c9d1ce47989bc60daa712c5235664650b132e246b8e61b6bd3dc8179649445b7cf389065373c75f23829a676dbda6b5d2428928
   languageName: node
   linkType: hard
 

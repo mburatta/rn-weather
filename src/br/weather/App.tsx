@@ -8,6 +8,7 @@ import * as brWeatherTheme from '@br/weather/assets/jsons/br-weather-theme.json'
 
 import {default as StorybookDefault} from '../../../.storybook';
 import Config from 'react-native-config';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const navItems: NavItem[] = [
     {
@@ -29,7 +30,9 @@ const navItems: NavItem[] = [
 const App = (): JSX.Element => {
     return (
         <ApplicationProvider mapping={mapping} theme={{...light, ...brWeatherTheme}}>
-            <Navigation navItems={navItems} />
+            <SafeAreaProvider>
+                <Navigation navItems={navItems} />
+            </SafeAreaProvider>
         </ApplicationProvider>
     );
 };

@@ -2,11 +2,24 @@
  * @format
  */
 
+import MockAdapter from "axios-mock-adapter";
+
+/**
+ * 1️⃣  Mock di axios **prima** di importare il service
+ *     ▸ usiamo il modulo reale di axios, ma facciamo sì che
+ *       `axios.create()` restituisca *la stessa* istanza di default.
+ *     ▸ così l'oggetto `http` creato dentro weatherService punta proprio
+ *       all'istanza che stiamo per intercettare con axios‑mock‑adapter.
+ */
+jest.mock('axios', () => {
+    const realAxios = jest.requireActual('axios');
+    // stub di create che ritorna l'istanza di default
+    realAxios.create = jest.fn(() => realAxios);
+    return {__esModule: true, default: realAxios};
+});
+
 import React from 'react';
 import {fireEvent, render, screen, waitFor, within} from '@testing-library/react-native';
-import App from "./App";
-import navigationRef from '@br/weather/core/services/NavigationService';
-
 
 jest.mock('react-native-config', () => ({
     Config: { STORYBOOK_ENABLED: 'false' }
@@ -17,47 +30,86 @@ jest.mock('../../../.storybook', () => ({
 
 // jest.useFakeTimers();
 
-test('Weather Forecast page is the first page visible', async () => {
+import App from "./App";
+import navigationRef from '@br/weather/core/services/NavigationService';
+import axios from "axios";
 
-    render(<App />);
+describe('App tests', () => {
 
-    // aspetta che la navigazione sia pronta
-    await waitFor(() => expect(navigationRef.isReady()).toBe(true));
+    let mock: MockAdapter;
 
-    const route = navigationRef.getCurrentRoute();
-    expect(route?.name).toBe('weather');
+    beforeEach(() => {
+        mock = new MockAdapter(axios);
 
-    const weatherHead = await screen.findByRole('header', { name:'Weather' });
-    expect(weatherHead).toBeVisible();
-    expect(weatherHead).toHaveTextContent('Weather');
+        const mockSuccessResponse = {
+            current: {
+                humidity: 81,
+                temp: 298.55,
+                weather: [{main: 'Clouds', description: 'few clouds', icon: '02d'}],
+            },
+            daily: [
+                {
+                    dt: 1618317040,
+                    humidity: 70,
+                    temp: {min: 295.51, max: 303.15},
+                    weather: [{main: 'Rain', description: 'light rain', icon: '10d'}],
+                },
+            ],
+        } as any;
 
-    const weatherSummary = await screen.findByRole('summary');
-    expect(weatherSummary).toHaveTextContent('Weather Forecast!');
-});
+        // Intercetta qualsiasi GET che contenga "/onecall" nel path (query inclusa)
+        mock.onGet(/onecall/).reply(200, mockSuccessResponse);
+    });
 
-test( 'Open Setting screen selecting Settings tab', async () => {
+    afterEach(() => {
+        mock.restore();
+        jest.clearAllMocks();
+    });
 
-    render(<App />);
+    test('Weather Forecast page is the first page visible', async () => {
 
-    // Get *all* the buttons (tabs are buttons)
-    const tabButtons = screen.getAllByRole('button');
+        render(<App />);
 
-    // Find the one labeled "Settings"
-    const settingsTab = tabButtons.find((btn) =>
-        within(btn).queryByText('Settings')
-    );
+        await waitFor(() => expect(navigationRef.isReady()).toBe(true));
 
-    expect(settingsTab).toBeTruthy(); // make sure it's found
-    fireEvent.press(settingsTab!);
+        const route = navigationRef.getCurrentRoute();
+        expect(route?.name).toBe('weather');
 
-    const route = navigationRef.getCurrentRoute();
-    expect(route?.name).toBe('settings');
 
-    const weatherHead = await screen.findByRole('header', { name:'Settings' });
-    expect(weatherHead).toBeVisible();
-    expect(weatherHead).toHaveTextContent('Settings');
+        const weatherHead = await screen.findByRole('header', { name:'Weather' });
+        expect(weatherHead).toBeVisible();
+        expect(weatherHead).toHaveTextContent('Weather');
 
-    const settingsSummary = await screen.findByRole('summary');
-    expect(settingsSummary).toBeVisible();
-    expect(settingsSummary).toHaveTextContent('Settings!')
+        const weatherSummary = await screen.findByRole('scrollbar');
+        expect(weatherSummary).toBeOnTheScreen();
+    });
+
+    test( 'Open Setting screen selecting Settings tab', async () => {
+
+        render(<App />);
+
+        // Get *all* the buttons (tabs are buttons)
+        const tabButtons = screen.getAllByRole('button');
+
+        // Find the one labeled "Settings"
+        const settingsTab = tabButtons.find((btn) =>
+            within(btn).queryByText('Settings')
+        );
+
+        expect(settingsTab).toBeTruthy(); // make sure it's found
+        fireEvent.press(settingsTab!);
+
+        const route = navigationRef.getCurrentRoute();
+        expect(route?.name).toBe('settings');
+
+        const weatherHead = await screen.findByRole('header', { name:'Settings' });
+        expect(weatherHead).toBeOnTheScreen();
+        expect(weatherHead).toHaveTextContent('Settings');
+
+        const settingsSummary = await screen.findByRole('summary');
+        expect(settingsSummary).toBeOnTheScreen();
+        expect(settingsSummary).toHaveTextContent('Settings!')
+
+    })
+
 })
