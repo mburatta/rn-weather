@@ -11,9 +11,34 @@ jest.mock('@br/weather/core/contexts/ModeContext', () => {
     };
 });
 
-import {useModeContext} from '@br/weather/core/contexts/ModeContext';
+jest.mock('react-redux', () => ({
+    ...jest.requireActual('react-redux'),
+    useSelector: jest.fn(),
+    useDispatch: jest.fn(),
+}));
+
+import * as ReactRedux from 'react-redux';
 import {DarkMode} from '@br/weather/settings/components/DarkMode/DarkMode';
 import {InteractionManager} from "react-native";
+import {settings, SettingsState} from '@br/weather/core/models';
+import {init} from '@rematch/core';
+
+// ---- helpers for typed mocks
+const useSelector = ReactRedux.useSelector as unknown as jest.Mock;
+const useDispatch = ReactRedux.useDispatch as unknown as jest.Mock;
+
+const makeDispatch = () => ({
+    // Rematch-like shape expected by your component:
+    settings: { setMode: jest.fn() },
+});
+
+const setReduxState = (mode: 'light' | 'dark', dispatchObj = makeDispatch()) => {
+    useSelector.mockImplementation((sel: any) =>
+        sel({ settings: { mode } }) // must match your RootState shape used in component
+    );
+    useDispatch.mockReturnValue(dispatchObj);
+    return dispatchObj;
+};
 
 // Mocka InteractionManager per eseguire subito i callback
 jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation((cb: any) => {
@@ -40,7 +65,8 @@ describe('DarkMode component', () => {
     });
 
     test('Test texts', () => {
-        (useModeContext as jest.Mock).mockReturnValueOnce({ mode: 'light', setMode: jest.fn() });
+        setReduxState('light');
+        // (useModeContext as jest.Mock).mockReturnValueOnce({ mode: 'light', setMode: jest.fn() });
         renderWithKitten(<DarkMode />);
 
         expect(screen.getByText('Dark Mode')).toBeVisible();
@@ -48,7 +74,7 @@ describe('DarkMode component', () => {
     });
 
     test('Switch is off when theme is Light', () => {
-        (useModeContext as jest.Mock).mockReturnValueOnce({ mode: 'light', setMode: jest.fn() });
+        setReduxState('light');
         renderWithKitten(<DarkMode />);
 
         const toggle = screen.getByRole('switch');
@@ -57,7 +83,7 @@ describe('DarkMode component', () => {
     });
 
     test('Switch is on if the theme is Dark', () => {
-        (useModeContext as jest.Mock).mockReturnValueOnce({ mode: 'dark', setMode: jest.fn() });
+        setReduxState('dark');
         renderWithKitten(<DarkMode />);
 
         const toggle = screen.getByRole('switch');
@@ -66,40 +92,37 @@ describe('DarkMode component', () => {
 
     test("When mode is light and user toggle the switch Dark Mode component call setMode with 'dark' value", () => {
 
-        const mockSetMode = jest.fn();
-
-        (useModeContext as jest.Mock).mockReturnValueOnce({ mode: 'light', setMode: mockSetMode });
+        const dispatchObj = setReduxState('light');
         renderWithKitten(<DarkMode />);
-
         const toggle = screen.getByRole('switch');
 
         act(() => {
-            fireEvent(toggle, 'onChange', true); // from light -> true -> dark
-            // avanza i timer per far scattare rAF (mockato con setTimeout) e setTimeout(50)
-            jest.runAllTimers();
+            fireEvent(toggle, 'onChange', true);
+            jest.runAllTimers(); // rAF + setTimeout(50)
         });
 
-        expect(mockSetMode).toHaveBeenCalledTimes(1);
-        expect(mockSetMode).toHaveBeenCalledWith('dark');
+        expect(dispatchObj.settings.setMode).toHaveBeenCalledTimes(1);
+        expect(dispatchObj.settings.setMode).toHaveBeenCalledWith('dark');
     });
+
+    const createStore = (preloaded?: Partial<SettingsState>) =>
+        init({
+            models: { settings: { ...settings, state: { ...settings.state, ...preloaded } } },
+        });
 
     test("When mode is dark and user toggle the switch Light Mode component call setMode with 'light' value", () => {
 
-        const mockSetMode = jest.fn();
-
-        (useModeContext as jest.Mock).mockReturnValueOnce({ mode: 'light', setMode: mockSetMode });
+        const dispatchObj = setReduxState('dark');
         renderWithKitten(<DarkMode />);
-
         const toggle = screen.getByRole('switch');
 
         act(() => {
-            fireEvent(toggle, 'onChange', true); // from light -> true -> dark
-            // avanza i timer per far scattare rAF (mockato con setTimeout) e setTimeout(50)
+            fireEvent(toggle, 'onChange', false);
             jest.runAllTimers();
         });
 
-        expect(mockSetMode).toHaveBeenCalledTimes(1);
-        expect(mockSetMode).toHaveBeenCalledWith('dark');
+        expect(dispatchObj.settings.setMode).toHaveBeenCalledTimes(1);
+        expect(dispatchObj.settings.setMode).toHaveBeenCalledWith('light');
     });
 
 

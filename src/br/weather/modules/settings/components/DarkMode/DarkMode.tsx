@@ -2,9 +2,16 @@ import {useModeContext} from "@br/weather/core/contexts";
 import {ListItem, Toggle, Icon, Text} from '@br/weather/core/components';
 import {JSX, memo, useCallback, useMemo, useState} from 'react';
 import {InteractionManager} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {AppDispatch, RootState} from '../../../../Store.ts';
 
 export const DarkMode = memo((): JSX.Element => {
-    const {mode, setMode} = useModeContext();
+
+    const mode = useSelector((state: RootState) => state.settings.mode);
+
+    const {
+        settings: {setMode},
+    } = useDispatch<AppDispatch>();
 
     const [localChecked, setLocalChecked] = useState(mode === 'dark');
     const [isSwitching, setIsSwitching] = useState(false);

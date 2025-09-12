@@ -29,3 +29,4 @@ export * from './carousel/Carousel';
 export * from './icon/Icon';
 export * from './navigation/Navigation';
 export * from './layout/AppLayout';
+export * from './loading/Loading';
