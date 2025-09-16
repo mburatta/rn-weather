@@ -1,11 +1,13 @@
-import {Text} from 'react-native-gesture-handler';
 import {JSX} from "react";
+
 import {AppLayout} from "@br/weather/core/components";
+
+import {DarkMode} from '@br/weather/settings/components';
 
 const SettingsScreen = (): JSX.Element => {
     return (
         <AppLayout>
-            <Text accessibilityRole="summary">Settings!</Text>
+            <DarkMode />
         </AppLayout>
     );
 };

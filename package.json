@@ -9,6 +9,7 @@
     "lint": "prettier --write . '**/*.{js,jsx,ts,tsx}' && eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "start": "react-native start",
     "test": "jest",
+    "coverage": "jest --coverage",
     "storybook:ios": "echo \"STORYBOOK_ENABLED=true\" > .env && react-native run-ios && echo \"STORYBOOK_ENABLED=false\" > .env",
     "storybook:android": "echo \"STORYBOOK_ENABLED=true\" > .env && react-native run-android && echo \"STORYBOOK_ENABLED=false\" > .env",
     "storybook-generate": "sb-rn-get-stories"
@@ -17,9 +18,12 @@
     "@d11/react-native-fast-image": "^8.6.3",
     "@eva-design/eva": "^2.2.0",
     "@eva-design/material": "^2.2.0",
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/native": "^7.1.6",
+    "@rematch/core": "^2.2.0",
+    "@rematch/persist": "^2.1.2",
     "@ui-kitten/components": "^5.3.1",
     "axios": "^1.9.0",
     "dayjs": "^1.11.13",
@@ -33,6 +37,8 @@
     "react-native-screens": "^4.10.0",
     "react-native-svg": "^15.11.2",
     "react-native-vector-icons": "^10.2.0",
+    "react-redux": "^9.2.0",
+    "redux-persist": "^6.0.0",
     "use-immer": "^0.11.0"
   },
   "devDependencies": {
@@ -59,6 +65,7 @@
     "@types/react-dom": "^19",
     "@types/react-native-snap-carousel": "^3.8.12",
     "@types/react-native-vector-icons": "^6.4.18",
+    "@types/react-redux": "^7.1.34",
     "@types/react-test-renderer": "^19.0.0",
     "axios-mock-adapter": "^2.1.0",
     "babel-loader": "^8.4.1",

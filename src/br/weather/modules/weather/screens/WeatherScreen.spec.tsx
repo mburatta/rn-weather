@@ -15,9 +15,21 @@ jest.mock('axios', () => {
 });
 
 import React from 'react';
-import {screen, within} from '@testing-library/react-native';
+import {act, screen, within} from '@testing-library/react-native';
 import WeatherScreen from "./WeatherScreen";
 import axios from 'axios';
+import {InteractionManager} from 'react-native';
+
+beforeAll(() => {
+    // rAF -> setTimeout(0)
+    // @ts-ignore
+    global.requestAnimationFrame = (cb: FrameRequestCallback) => setTimeout(cb, 0);
+    // Esegui subito i callback di InteractionManager (se usato)
+    jest.spyOn(InteractionManager, 'runAfterInteractions').mockImplementation((cb: any) => {
+        if (typeof cb === 'function') cb();
+        return { then: (fn: any) => fn && fn(), cancel: () => {} } as any;
+    });
+});
 
 describe('WeatherScreen', () => {
 
@@ -25,26 +37,38 @@ describe('WeatherScreen', () => {
 
     beforeEach(() => {
         mock = new MockAdapter(axios);
+        jest.useFakeTimers();
     });
 
     afterEach(() => {
         mock.restore();
+        //jest.runOnlyPendingTimers();
+        jest.useRealTimers();
         jest.clearAllMocks();
+
     });
+
+    async function flushAll() {
+        await act(async () => {
+            jest.runAllTimers();       // timers (incluso rAF polyfill)
+            await Promise.resolve();   // microtask queue (promesse)
+        });
+    }
+
 
     test('Weather Forecast! text is visible', async () => {
 
         const mockSuccessResponse = {
             current: {
                 humidity: 81,
-                temp: 298.55,
+                temp: 29.8,
                 weather: [{main: 'Clouds', description: 'few clouds', icon: '02d'}],
             },
             daily: [
                 {
                     dt: 1618317040,
                     humidity: 70,
-                    temp: {min: 295.51, max: 303.15},
+                    temp: {min: 29.5, max: 30.3},
                     weather: [{main: 'Rain', description: 'light rain', icon: '10d'}],
                 },
             ],
@@ -55,8 +79,9 @@ describe('WeatherScreen', () => {
 
         const expected = 'Weather Forecast!';
         renderWithKitten(<WeatherScreen />);
+        await flushAll();
 
-        const weathers = await screen.findByRole('scrollbar');
+        const weathers = await screen.findByRole('adjustable');
         expect(weathers).toBeOnTheScreen();
         expect(weathers).toHaveProp('accessibilityLabel', 'Weather for the next few days');
 
@@ -64,10 +89,10 @@ describe('WeatherScreen', () => {
         expect(forecast).toBeOnTheScreen();
 
         expect(within(forecast).getByText('few clouds')).toBeTruthy();
-        expect(within(forecast).getByText('295°C - 303°C')).toBeTruthy();
+        expect(within(forecast).getByText('29°C - 30°C')).toBeTruthy();
         expect(within(forecast).getByText('Humidity:')).toBeTruthy();
         expect(within(forecast).getByText('81%')).toBeTruthy();
-        expect(within(forecast).getByText('298°C')).toBeTruthy();
+        expect(within(forecast).getByText('29°C')).toBeTruthy();
         expect(within(forecast).getByText('13/04/2021, Tuesday (Today)')).toBeTruthy();
     });
 })

@@ -28,6 +28,10 @@ jest.mock('react-native-config', () => ({
 jest.mock('../../../.storybook', () => ({
 }));
 
+jest.mock('@react-native-async-storage/async-storage', () =>
+    require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
+);
+
 // jest.useFakeTimers();
 
 import App from "./App";
@@ -80,7 +84,7 @@ describe('App tests', () => {
         expect(weatherHead).toBeVisible();
         expect(weatherHead).toHaveTextContent('Weather');
 
-        const weatherSummary = await screen.findByRole('scrollbar');
+        const weatherSummary = await screen.findByRole('adjustable');
         expect(weatherSummary).toBeOnTheScreen();
     });
 
@@ -106,9 +110,8 @@ describe('App tests', () => {
         expect(weatherHead).toBeOnTheScreen();
         expect(weatherHead).toHaveTextContent('Settings');
 
-        const settingsSummary = await screen.findByRole('summary');
+        const settingsSummary = await screen.findByRole('switch');
         expect(settingsSummary).toBeOnTheScreen();
-        expect(settingsSummary).toHaveTextContent('Settings!')
 
     })
 
