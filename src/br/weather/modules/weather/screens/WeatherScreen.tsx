@@ -1,6 +1,6 @@
 import React, {JSX, useEffect, useRef, useState} from 'react';
 
-import {config, UnitType} from '@br/weather/core/config';
+import {config, UnitType} from '@br/weather/config';
 import {WeatherData} from '@br/weather/weather/interfaces';
 import {weatherService} from '@br/weather/weather/services';
 import {ActivityIndicator, Alert, AppLayout, ICarouselInstance, useStyleSheet} from '@br/weather/core/components';

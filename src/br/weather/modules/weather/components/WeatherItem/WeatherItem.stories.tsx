@@ -2,7 +2,7 @@ import type {Meta, StoryObj} from '@storybook/react';
 import WeatherItem from './WeatherItem';
 import {ApplicationProvider, light, mapping, Text, View} from '@br/weather/core/components';
 import * as brWeatherTheme from '@br/weather/assets/jsons/br-weather-theme.json';
-import {UnitType} from '@br/weather/core/config';
+import {UnitType} from '@br/weather/config';
 
 const meta = {
     title: 'Weather Item',

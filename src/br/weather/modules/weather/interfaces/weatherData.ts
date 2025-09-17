@@ -1,4 +1,4 @@
-import {UnitType} from '@br/weather/core/config';
+import {UnitType} from '@br/weather/config';
 
 export interface WeatherData {
     date: number;

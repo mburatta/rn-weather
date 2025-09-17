@@ -1,4 +1,4 @@
-import {config, UnitType} from '@br/weather/core/config';
+import {config, UnitType} from '@br/weather/config';
 import {formatDate} from "@br/weather/core/helpers";
 import {Text, View, Card, FastImage, TouchableOpacity} from '@br/weather/core/components';
 import {JSX} from "react";

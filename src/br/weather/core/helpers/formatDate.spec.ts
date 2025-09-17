@@ -14,7 +14,7 @@ jest.mock('dayjs', () => {
 
 
 const dateFormatMock = 'YYYY-MM-DD';
-jest.mock('@br/weather/core/config', () => ({
+jest.mock('@br/weather/config', () => ({
     config: {
         dateFormat: dateFormatMock,
     },

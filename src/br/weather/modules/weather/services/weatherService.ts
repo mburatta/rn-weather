@@ -1,5 +1,5 @@
 import { axios, AxiosError } from '@br/weather/core/services';
-import {config, UnitType} from '@br/weather/core/config';
+import {config, UnitType} from '@br/weather/config';
 import {
     GetDailyWeatherForecastJsonResult,
     GetDailyWeatherForecastParams,

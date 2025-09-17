@@ -3,14 +3,7 @@ import {render, screen} from '@testing-library/react-native';
 import SettingsScreen from './SettingsScreen.tsx';
 import {init} from '@rematch/core';
 import {Provider} from 'react-redux';
-
-type SettingsState = { mode: 'light' | 'dark' };
-const settings = {
-    state: { mode: 'light' } as SettingsState,
-    reducers: {
-        setMode: (state: SettingsState, mode: 'light' | 'dark') => ({ ...state, mode }),
-    },
-};
+import {settings, SettingsState} from '@br/weather/core/models';
 
 const createStore = (preloaded?: Partial<SettingsState>) =>
     init({

@@ -2,7 +2,7 @@ import {screen} from '@testing-library/react-native';
 import WeatherItem, {WeatherItemProps} from './WeatherItem';
 
 // Mock di config (assumiamo che config.weather.unitCodes.celsius === 'metric')
-jest.mock('@br/weather/core/config', () => ({
+jest.mock('@br/weather/config', () => ({
     config: {weather: {unitCodes: {celsius: 'metric'}}},
 }));
 
