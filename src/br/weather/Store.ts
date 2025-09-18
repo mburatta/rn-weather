@@ -2,6 +2,8 @@ import { init, RematchRootState } from '@rematch/core';
 import createRematchPersist, { getPersistor } from '@rematch/persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {settings} from '@br/weather/core/models';
+import {composeWithDevTools} from "remote-redux-devtools";
+import devTools from 'remote-redux-devtools';
 
 const models = { settings } as const;
 
@@ -18,6 +20,15 @@ const persistPlugin = createRematchPersist<RootModel, RootModel, Record<string, 
 export const store = init<RootModel>({
     models,
     plugins: [persistPlugin],
+    redux: {
+        devtoolComposer: composeWithDevTools({
+            name: 'RNWeatherStore',
+            realtime: true,
+            hostname: 'localhost',
+            port: 8001,
+            maxAge: 100,
+        }),
+    },
 });
 
 export const persistor = getPersistor();
